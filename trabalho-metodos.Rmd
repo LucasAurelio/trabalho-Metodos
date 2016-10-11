@@ -1,0 +1,119 @@
+---
+title: "Análise de Regressão"
+author: "Jair Guedes, Lucas Aurelio, Rafaelle Amorim"
+date: "13 de outubro de 2016"
+output: html_document
+---
+```{r setup, include=FALSE, echo=FALSE}
+
+library(ggplot2)
+theme_set(theme_bw())
+library(dplyr)
+library(RcmdrMisc)
+
+dados.sal.edu.exp <- readXL("C:/Users/lucas/Downloads/11_dados_salario_educacao_experiencia.xlsx")
+
+```
+
+Nesse trabalho, iremos realizar uma <b>análise sobre um Modelo de Regressão Linear (MRLM)</b>.
+<br>
+Os dados utilizados na contrução do modelo possuem 3 variáveis:
+<ul>
+<li>Dependente/resposta: y.salario</li>
+<li>Independente/fator: x1.educação</li>
+<li>Independente/fator: x2.experiencia</li>
+</ul>
+<br><p>
+Primeiro, vamos observar a distribuição dos dados para <i>x1.educacao</i> e <i>y.salario</i>:
+```{r echo=FALSE}
+ggplot(dados.sal.edu.exp, aes(x = x1.educacao, y = y.salario)) + labs(title="Dispersão Educação_x_Salário",x="Anos de Educação", y="Salário anual(milhares)")+
+  geom_point()
+```
+</br>
+Podemos observar que há um certo comportamento crescente para a distribuição entre as variáveis educação e salário. O que pode ser um indício da uma relação linear positiva.
+</br>
+Já para <i>x2.experiencia</i> e <i>y.salario</i>, temos:
+```{r echo=FALSE}
+ggplot(dados.sal.edu.exp, aes(x = x2.experiencia, y = y.salario))+labs(title="Dispersão Experiência_x_Salário",x="Anos de Experiência", y="Salário anual(milhares)")+ 
+  geom_point()
+```
+</br>
+Imediatamente percebemos que a relação entre essas duas variáveis é maior que a relação entre <i>x1.educacao</i> e <i>y.salario</i>, uma vez que se passada uma linha reta o mais próximo possível dos pontos (ideia de um modelo linear) as diferenças serão menores. Logo, há uma boa probabilidade de existir uma relação linear entre essas duas variáveis.
+</br><p>
+Agora, vamos analisar a correlação das variáveis.
+</br>
+Primeiro, temos que transformar o dados do dataframe em matrizes:
+```{r}
+#matriz com os valores de sálarios anuais
+salario <- as.matrix(dados.sal.edu.exp$y.salario)
+#matriz com os valores de anos de educação
+educacao <- as.matrix(dados.sal.edu.exp$x1.educacao)
+#matriz com os calores de anos de experiência
+experiencia <- as.matrix(dados.sal.edu.exp$x2.experiencia)
+```
+Agora, com essas matrizes, podemos estimar os coeficientes de correlação entre as variáveis.
+Assim, para a correlação entre <i>x1.edcuacao</i> e <i>y.salario</i>, temos:
+```{r}
+p.educacao.salario <- cov(salario,educacao)/(cov(salario)*cov(educacao))
+p.educacao.salario
+```
+E para a correlação entre <i>x2.experiencia</i> e <i>y.salario</i>, temos:
+```{r}
+p.experiencia.salario <- cov(salario,experiencia)/(cov(salario)*cov(experiencia))
+p.experiencia.salario
+```
+Ambos os coeficientes de correlação são menores que 0.19, o que indica uma correlação bem fraca.
+</br>
+Assim, considerando como hipótese nula:
+<ul>
+<li>Ho: ρ = 0</li>
+</ul>
+para cada uma das correlações entre as variáveis, podemos realizar o teste de significância.
+Primeiro para a correlação entre <i>x1.educacao</i> e <i>y.salario</i>:
+```{r}
+cor.test(dados.sal.edu.exp$y.salario,dados.sal.edu.exp$x1.educacao)
+```
+Agora para <i>x2.experiencia</i> e <i>y.salario</i>:
+```{r}
+cor.test(dados.sal.edu.exp$y.salario,dados.sal.edu.exp$x2.experiencia)
+```
+Assim, como os 'p-valor' dos testes são muito próximos de zero, rejeitamos Ho.
+</b><p>
+Nessa etapa do trabalho vamos estimar os valores de βi. Para isso, temos as matrizes:
+```{r}
+#matriz com os valores de salario
+matrizY <- salario
+matrizY
+#matriz com os valores de anos de educação e anos de experiência
+matrizX <- cbind(c(1,1,1,1,1),educacao,experiencia)
+matrizX
+```
+Agora, estimamos os coeficientes.
+```{r}
+transX <- t(matrizX)
+transXX <- transX%*%matrizX
+invTransXX <- solve(transXX)
+transXY <- transX%*%matrizY
+
+matrizCoeficientes <- invTransXX%*%transXY
+matrizCoeficientes
+```
+Logo, temos:
+<ul>
+<li>β0 = -23.75</li>
+<li>β1 = -0.25</li>
+<li>β2 = 5.5</li>
+</ul>
+</br><p>
+Agora, a partir da matriz dos coeficientes que estimamos, e da matriz dos valores de Xi(<i>matrizX</i>), podemos obter a matriz de estimativas dos valores previstos:
+```{r}
+matrizYi <- matrizX%*%matrizCoeficientes
+matrizYi
+```
+Assim, temos os valores acima como o vetor dos valores previstos.
+</br><p>
+```{r}
+```
+
+```{r}
+```
