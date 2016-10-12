@@ -245,6 +245,14 @@ matrizYi</code></pre>
 ## [5,] 40.25</code></pre>
 Assim, temos os valores acima como o vetor dos valores previstos. </br>
 <p>
+<hr />
+<p>Calcule a Soma de Quadrados Total (SQtotal) e a Soma de Quadrados de Regressão (SQReg) para então calcular o coeficiente de determinação R2 e diga se o modelo de regressão explica bem a variabilidade total dos dados.</p>
+<p>Para calcular a Soma de Quadrados Total temos que: SQtotal = somatorio (Yi - media(Y))² Assim, para</p>
+<pre class="r"><code>Ysalario = mean(unlist(dados.sal.edu.exp[&quot;y.salario&quot;]))
+SQtot = sum((unlist(dados.sal.edu.exp[&quot;y.salario&quot;]) - Ysalario)**2)
+
+SQtot</code></pre>
+<pre><code>## [1] 272</code></pre>
 
 
 
