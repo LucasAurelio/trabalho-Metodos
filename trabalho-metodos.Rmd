@@ -11,7 +11,7 @@ theme_set(theme_bw())
 library(dplyr)
 library(RcmdrMisc)
 
-dados.sal.edu.exp <- readXL("C:/Users/lucas/Downloads/11_dados_salario_educacao_experiencia.xlsx")
+dados.sal.edu.exp <- readXL("/Users/jairneto/Downloads/11_dados_salario_educacao_experiencia.xlsx")
 
 ```
 
@@ -115,5 +115,19 @@ Assim, temos os valores acima como o vetor dos valores previstos.
 ```{r}
 ```
 
+Utilizando a função t.test() do R, vamos verificar se a educação exerce influência sobre o salário e se a variável experiência exerce influência sobre o salário.
 ```{r}
+
+t.test(salario,educacao, var.equal=FALSE, paired=FALSE)
+t.test(salario, experiencia, var.equal=FALSE, paired=FALSE)
 ```
+Como podemos ver o valor p para a relação entre salário e educação é igual a 0.001845 e para a relação salario e experiência é igual a 0.004889.O que indica uma influência das variáveis dependentes sobre a independente, pois os dois valores p encontrados são menores que 0.05.
+
+Temos que o salário previsto será igual a B0 + B1 * X1 + B2 * X2, realizando os cálculos temos que o salário previsto será igual a 30.
+```{r}
+
+salario.previsto <- -23.75 + 5*-0.25 + 10*5.50
+salario.previsto
+```
+
+
