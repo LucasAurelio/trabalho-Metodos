@@ -15,9 +15,9 @@ dados.sal.edu.exp <- readXL("11_dados_salario_educacao_experiencia.xlsx")
 
 ```
 
-Nesse trabalho, iremos realizar uma <b>análise sobre um Modelo de Regressão Linear (MRLM)</b>.
+Nesse trabalho, iremos realizar uma <b>análise sobre um Modelo de Regressão Linear Múltipla(MRLM)</b>.
 <br>
-Os dados utilizados na contrução do modelo possuem 3 variáveis:
+Os dados utilizados na construção do modelo possuem 3 variáveis:
 <ul>
 <li>Dependente/resposta: y.salario</li>
 <li>Independente/fator: x1.educação</li>
@@ -52,17 +52,17 @@ educacao <- as.matrix(dados.sal.edu.exp$x1.educacao)
 experiencia <- as.matrix(dados.sal.edu.exp$x2.experiencia)
 ```
 Agora, com essas matrizes, podemos estimar os coeficientes de correlação entre as variáveis.
-Assim, para a correlação entre <i>x1.edcuacao</i> e <i>y.salario</i>, temos:
+Assim, para a correlação entre <i>x1.educacao</i> e <i>y.salario</i>, temos:
 ```{r}
-p.educacao.salario <- cov(salario,educacao)/(cov(salario)*cov(educacao))
+p.educacao.salario <- cor(salario,educacao)
 p.educacao.salario
 ```
 E para a correlação entre <i>x2.experiencia</i> e <i>y.salario</i>, temos:
 ```{r}
-p.experiencia.salario <- cov(salario,experiencia)/(cov(salario)*cov(experiencia))
+p.experiencia.salario <- cor(salario,experiencia)
 p.experiencia.salario
 ```
-Ambos os coeficientes de correlação são menores que 0.19, o que indica uma correlação bem fraca.
+Ambos os coeficientes de correlação são maiores que 0.9, o que indica uma correlação muito forte.
 </br>
 Assim, considerando como hipótese nula:
 <ul>
@@ -112,7 +112,6 @@ matrizYi
 ```
 Assim, temos os valores acima como o vetor dos valores previstos.
 </br><p>
----
 
 Para calcular a Soma de Quadrados Total (SQtotal) temos que:
 SQtotal = somatorio (Yi - media(Y))²
