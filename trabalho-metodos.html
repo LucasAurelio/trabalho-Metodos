@@ -245,6 +245,25 @@ matrizYi</code></pre>
 ## [5,] 40.25</code></pre>
 Assim, temos os valores acima como o vetor dos valores previstos. </br>
 <p>
+<hr />
+<p>Para calcular a Soma de Quadrados Total (SQtotal) temos que: SQtotal = somatorio (Yi - media(Y))²</p>
+<pre class="r"><code>Ysalario = mean(unlist(dados.sal.edu.exp[&quot;y.salario&quot;]))
+SQtotal = sum((unlist(dados.sal.edu.exp[&quot;y.salario&quot;]) - Ysalario)**2)
+SQtotal</code></pre>
+<pre><code>## [1] 272</code></pre>
+<p>Para calcular a Soma de Quadrados de Regressão (SQReg) temos que: SQReg = somatorio(ˆYi - media(Y))²</p>
+<pre class="r"><code>SQReg = sum((unlist(matrizYi) - Ysalario)**2)
+SQReg</code></pre>
+<pre><code>## [1] 270.5</code></pre>
+<p>Para calcular o coeficiente de determinação R² = SQReg/SQtotal, temos que:</p>
+<pre class="r"><code>RQuad = SQReg/SQtotal
+RQuad</code></pre>
+<pre><code>## [1] 0.9944853</code></pre>
+<p>o R² de um modelo é 0.9944853, isto significa que 99.45% da variável dependente consegue ser explicada pelos regressores presentes no modelo.</p>
+<p>Realize uma ANOVA (Analise de Variancia) ao ńıvel de 5% de significancia e diga s estatisticamente significativo dizer que pelo menos uma das variaveis independentes exerce influencia sobre a variavel dependente/resposta y</p>
+<ol start="7" style="list-style-type: lower-alpha">
+<li>Realize testes marginais (t de Student) para testar individualmente se cada variável independente exerce influência sobre a variável dependente y.</li>
+</ol>
 <p>Utilizando a função t.test() do R, vamos verificar se a educação exerce influência sobre o salário e se a variável experiência exerce influência sobre o salário.</p>
 <pre class="r"><code>t.test(salario,educacao, var.equal=FALSE, paired=FALSE)</code></pre>
 <pre><code>## 
@@ -271,7 +290,9 @@ Assim, temos os valores acima como o vetor dos valores previstos. </br>
 ## mean of x mean of y 
 ##        30        10</code></pre>
 <p>Como podemos ver o valor p para a relação entre salário e educação é igual a 0.001845 e para a relação salario e experiência é igual a 0.004889.O que indica uma influência das variáveis dependentes sobre a independente, pois os dois valores p encontrados são menores que 0.05.</p>
-<p>Temos que o salário previsto será igual a B0 + B1 * X1 + B2 * X2, realizando os cálculos temos que o salário previsto será igual a 30.</p>
+<ol start="8" style="list-style-type: lower-alpha">
+<li>Diga qual é o salário anual estimado se um funcionário escolhido ao acaso tem 5 anos de educação após o ensino médio e 10 anos de experiência na empresa. . Temos que o salário previsto será igual a B0 + B1 * X1 + B2 * X2, realizando os cálculos temos que o salário previsto será igual a 30.</li>
+</ol>
 <pre class="r"><code>salario.previsto &lt;- -23.75 + 5*-0.25 + 10*5.50
 salario.previsto</code></pre>
 <pre><code>## [1] 30</code></pre>

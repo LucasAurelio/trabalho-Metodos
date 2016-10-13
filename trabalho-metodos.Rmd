@@ -11,7 +11,7 @@ theme_set(theme_bw())
 library(dplyr)
 library(RcmdrMisc)
 
-dados.sal.edu.exp <- readXL("/Users/jairneto/Downloads/11_dados_salario_educacao_experiencia.xlsx")
+dados.sal.edu.exp <- readXL("11_dados_salario_educacao_experiencia.xlsx")
 
 ```
 
@@ -112,8 +112,34 @@ matrizYi
 ```
 Assim, temos os valores acima como o vetor dos valores previstos.
 </br><p>
+---
+
+Para calcular a Soma de Quadrados Total (SQtotal) temos que:
+SQtotal = somatorio (Yi - media(Y))²
 ```{r}
+Ysalario = mean(unlist(dados.sal.edu.exp["y.salario"]))
+SQtotal = sum((unlist(dados.sal.edu.exp["y.salario"]) - Ysalario)**2)
+SQtotal
 ```
+
+Para calcular a Soma de Quadrados de Regressão (SQReg) temos que:
+SQReg = somatorio(ˆYi - media(Y))²
+```{r}
+SQReg = sum((unlist(matrizYi) - Ysalario)**2)
+SQReg
+```
+
+Para calcular o coeficiente de determinação R² = SQReg/SQtotal, temos que:
+```{r}
+RQuad = SQReg/SQtotal
+RQuad
+```
+
+o R² de um modelo é  0.9944853, isto significa que 99.45% da variável dependente consegue ser explicada pelos regressores presentes no modelo.
+
+Realize uma ANOVA (Analise de Variancia) ao ńıvel de 5% de significancia e diga s estatisticamente significativo dizer que pelo menos uma das variaveis independentes exerce influencia sobre a variavel dependente/resposta y
+
+(g) Realize testes marginais (t de Student) para testar individualmente se cada  variável independente exerce influência sobre a variável dependente y.
 
 Utilizando a função t.test() do R, vamos verificar se a educação exerce influência sobre o salário e se a variável experiência exerce influência sobre o salário.
 ```{r}
@@ -123,6 +149,8 @@ t.test(salario, experiencia, var.equal=FALSE, paired=FALSE)
 ```
 Como podemos ver o valor p para a relação entre salário e educação é igual a 0.001845 e para a relação salario e experiência é igual a 0.004889.O que indica uma influência das variáveis dependentes sobre a independente, pois os dois valores p encontrados são menores que 0.05.
 
+(h) Diga qual é o salário anual estimado se um funcionário escolhido ao acaso tem 5 anos de educação após o ensino médio e 10 anos de experiência na empresa.
+.
 Temos que o salário previsto será igual a B0 + B1 * X1 + B2 * X2, realizando os cálculos temos que o salário previsto será igual a 30.
 ```{r}
 
