@@ -135,10 +135,45 @@ RQuad
 ```
 
 o R² de um modelo é  0.9944853, isto significa que 99.45% da variável dependente consegue ser explicada pelos regressores presentes no modelo.
+</br><p>
 
-Realize uma ANOVA (Analise de Variancia) ao ńıvel de 5% de significancia e diga s estatisticamente significativo dizer que pelo menos uma das variaveis independentes exerce influencia sobre a variavel dependente/resposta y
+(f)Realize uma ANOVA (Analise de Variancia) ao ńıvel de 5% de significancia e diga s estatisticamente significativo dizer que pelo menos uma das variaveis independentes exerce influencia sobre a variavel dependente/resposta y
+Consideramos:
+<ul>
+<li>Ho:β0=β1=β2=0</li>
+<li>H1: pelo menos um coeficiente é diferente de zero</li>
+</ul>
+Como primeiro passo da ANOVA, vamos encontrar o valor da distribuição F para <i>k</i>(grau de liberdade do numerador) e <i>n-k-1</i>(grau de liberdade do denominador):
+```{r}
+k <- 2
+n <- 5
+valueFtab <- qf(.95,k,n-k-1)
+valueFtab
+```
+Agora, vamos calcular o F a partir das matrizes em questão. Temos que:
+<ul>
+<li>F = QMReg/QMRes</li>
+</ul>
+Como já temos o valor de SQReg (visto mais acima), só precisamos dividir pelo grau de liberdade para obtermos QMReg. Então, temos:
+```{r}
+QMReg <- SQReg/k
+QMReg
+```
+E agora calculamos o valor de QMRes:
+```{r}
+SQRes <- t(matrizY)%*%matrizY - (t(matrizCoeficientes)%*%t(matrizX)%*%matrizY)
+QMRes <- SQRes/(n-k-1)
+QMRes
+```
+A partir desses dois valores, podemos calcular F:
+```{r}
+valorF <- QMReg/QMRes
+valorF
+```
+Como o valor de F(=QMReg/QMRes) é bem maior que o valor da distribuição F para os graus de liberdade <i>k</i> e <i>n-k-1</i>, rejeitamos Ho. Ou seja, é  estatisticamente significativo dizer que pelo menos uma das variaveis independentes exerce influencia sobre a variavel resposta y.
+</br><p>
 
-(g) Realize testes marginais (t de Student) para testar individualmente se cada  variável independente exerce influência sobre a variável dependente y.
+(g)Realize testes marginais (t de Student) para testar individualmente se cada  variável independente exerce influência sobre a variável dependente y.
 
 Utilizando a função t.test() do R, vamos verificar se a educação exerce influência sobre o salário e se a variável experiência exerce influência sobre o salário.
 ```{r}

@@ -258,11 +258,47 @@ SQReg</code></pre>
 <pre class="r"><code>RQuad = SQReg/SQtotal
 RQuad</code></pre>
 <pre><code>## [1] 0.9944853</code></pre>
-<p>o R² de um modelo é 0.9944853, isto significa que 99.45% da variável dependente consegue ser explicada pelos regressores presentes no modelo.</p>
-<p>Realize uma ANOVA (Analise de Variancia) ao ńıvel de 5% de significancia e diga s estatisticamente significativo dizer que pelo menos uma das variaveis independentes exerce influencia sobre a variavel dependente/resposta y</p>
-<ol start="7" style="list-style-type: lower-alpha">
-<li>Realize testes marginais (t de Student) para testar individualmente se cada variável independente exerce influência sobre a variável dependente y.</li>
-</ol>
+o R² de um modelo é 0.9944853, isto significa que 99.45% da variável dependente consegue ser explicada pelos regressores presentes no modelo. </br>
+<p>
+(f)Realize uma ANOVA (Analise de Variancia) ao ńıvel de 5% de significancia e diga s estatisticamente significativo dizer que pelo menos uma das variaveis independentes exerce influencia sobre a variavel dependente/resposta y Consideramos:
+<ul>
+<li>
+Ho:β0=β1=β2=0
+</li>
+<li>
+H1: pelo menos um coeficiente é diferente de zero
+</li>
+</ul>
+<p>Como primeiro passo da ANOVA, vamos encontrar o valor da distribuição F para <i>k</i>(grau de liberdade do numerador) e <i>n-k-1</i>(grau de liberdade do denominador):</p>
+<pre class="r"><code>k &lt;- 2
+n &lt;- 5
+valueFtab &lt;- qf(.95,k,n-k-1)
+valueFtab</code></pre>
+<pre><code>## [1] 19</code></pre>
+Agora, vamos calcular o F a partir das matrizes em questão. Temos que:
+<ul>
+<li>
+F = QMReg/QMRes
+</li>
+</ul>
+<p>Como já temos o valor de SQReg (visto mais acima), só precisamos dividir pelo grau de liberdade para obtermos QMReg. Então, temos:</p>
+<pre class="r"><code>QMReg &lt;- SQReg/k
+QMReg</code></pre>
+<pre><code>## [1] 135.25</code></pre>
+<p>E agora calculamos o valor de QMRes:</p>
+<pre class="r"><code>SQRes &lt;- t(matrizY)%*%matrizY - (t(matrizCoeficientes)%*%t(matrizX)%*%matrizY)
+QMRes &lt;- SQRes/(n-k-1)
+QMRes</code></pre>
+<pre><code>##      [,1]
+## [1,] 0.75</code></pre>
+<p>A partir desses dois valores, podemos calcular F:</p>
+<pre class="r"><code>valorF &lt;- QMReg/QMRes
+valorF</code></pre>
+<pre><code>##          [,1]
+## [1,] 180.3333</code></pre>
+Como o valor de F(=QMReg/QMRes) é bem maior que o valor da distribuição F para os graus de liberdade <i>k</i> e <i>n-k-1</i>, rejeitamos Ho. Ou seja, é estatisticamente significativo dizer que pelo menos uma das variaveis independentes exerce influencia sobre a variavel resposta y. </br>
+<p>
+<p>(g)Realize testes marginais (t de Student) para testar individualmente se cada variável independente exerce influência sobre a variável dependente y.</p>
 <p>Utilizando a função t.test() do R, vamos verificar se a educação exerce influência sobre o salário e se a variável experiência exerce influência sobre o salário.</p>
 <pre class="r"><code>t.test(salario,educacao, var.equal=FALSE, paired=FALSE)</code></pre>
 <pre><code>## 
